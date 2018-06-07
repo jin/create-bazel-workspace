@@ -41,6 +41,8 @@ func main() {
 	for _, layer := range layers {
 		initializeLayer(layer, workspaceFile, buildFile, instructionsFile)
 	}
+
+	log.Println("Workspace successfully created in " + *outputDir + "/")
 }
 
 func initializeLayerLoads(layer string, buildFile *os.File) {
