@@ -24,8 +24,10 @@ The default output directory is named `bazel-workspace`.
 
 A *layer* contains the following:
 
-- WORKSPACE
-- BUILD.bazel (top level)
+- `WORKSPACE`: Specifies external dependencies and configurations
+- `BUILD.bazel`: Specifies the top level BUILD file content
+- `loads.bzl`: Specifies the load statement to be prepended to the BUILD file
+- `post_create.txt`: Further instructions for setting up a layer after `create-bazel-workspace`
 - TODO: Minimal example that makes use of the layer's rulesets (e.g. `android_binary`
   and `android_library` for the `android` layer)
 
