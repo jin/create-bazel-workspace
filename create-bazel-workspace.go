@@ -51,11 +51,11 @@ func initializeLayerLoads(layer string, buildFile *os.File) {
 
 func initializeLayer(layer string, workspaceFile *os.File, buildFile *os.File, instructionsFile *os.File) {
 	workspaceFile.WriteString("### layer dependencies:" + layer + " ###\n\n")
-	workspaceFile.WriteString(readFileContent(layer + "/WORKSPACE.tpl"))
+	workspaceFile.WriteString(readFileContent(layer + "/WORKSPACE.bzl"))
 	workspaceFile.WriteString("\n")
 
 	buildFile.WriteString("# layer targets:" + layer + "\n")
-	buildFile.WriteString(readFileContent(layer + "/BUILD.bazel.tpl"))
+	buildFile.WriteString(readFileContent(layer + "/BUILD.bazel.bzl"))
 	buildFile.WriteString("\n")
 
 	post_create_instructions := "# Instructions for the " + strings.TrimSuffix(layer, "/") + " layer:\n\n" + readFileContent(layer+"/post_create.txt") + "\n"

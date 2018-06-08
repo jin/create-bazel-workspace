@@ -83,12 +83,12 @@ Please file issues at https://github.com/bazelbuild/rules_scala
 
 To add a layer, open a pull request with new top-level directory named after the layer, containing these files:
 
-- `<layer>/WORKSPACE.tpl`
+- `<layer>/WORKSPACE.bzl`
 - `<layer>/loads.bzl`
-- `<layer>/BUILD.bazel.tpl`
+- `<layer>/BUILD.bazel.bzl`
 - `<layer>/post_create.txt`
 
-The files are allowed to be empty.
+These files are allowed to be empty.
 
 ## Idea
 
