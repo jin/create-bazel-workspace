@@ -43,28 +43,45 @@ func main() {
 	}
 
 	log.Println("Workspace successfully created in " + *outputDir + "/")
+
+	box, err := rice.FindBox("android/examples")
+	if err != nil {
+		panic(err)
+	}
+	log.Println(box)
 }
 
 func initializeLayerLoads(layer string, buildFile *os.File) {
-	buildFile.WriteString(readFileContent(layer+"/loads.bzl") + "\n")
+	writeToFile(buildFile, readFileContent(layer+"/loads.bzl")+"\n")
 }
 
 func initializeLayer(layer string, workspaceFile *os.File, buildFile *os.File, instructionsFile *os.File) {
-	workspaceFile.WriteString("### layer dependencies:" + layer + " ###\n\n")
-	workspaceFile.WriteString(readFileContent(layer + "/WORKSPACE.bzl"))
-	workspaceFile.WriteString("\n")
+	writeToFile(workspaceFile, "### layer dependencies:"+layer+" ###\n\n")
+	writeToFile(workspaceFile, readFileContent(layer+"/WORKSPACE.bzl"))
+	writeToFile(workspaceFile, "\n")
 
-	buildFile.WriteString("# layer targets:" + layer + "\n")
-	buildFile.WriteString(readFileContent(layer + "/BUILD.bazel.bzl"))
-	buildFile.WriteString("\n")
+	writeToFile(buildFile, "# layer targets:"+layer+"\n")
+	writeToFile(buildFile, readFileContent(layer+"/BUILD.bazel.bzl"))
+	writeToFile(buildFile, "\n")
 
-	post_create_instructions := "# Instructions for the " + strings.TrimSuffix(layer, "/") + " layer:\n\n" + readFileContent(layer+"/post_create.txt") + "\n"
-	log.Println(post_create_instructions)
-	instructionsFile.WriteString(post_create_instructions)
+	postCreateInstructions :=
+		"# Instructions for the " +
+			strings.TrimSuffix(layer, "/") +
+			" layer:\n\n" +
+			readFileContent(layer+"/post_create.txt") +
+			"\n"
+	log.Println(postCreateInstructions)
+	writeToFile(instructionsFile, postCreateInstructions)
 }
 
-func readFileContent(relative_path string) string {
-	dir, file := filepath.Split(relative_path)
+func writeToFile(file *os.File, content string) int {
+	bytes, err := file.WriteString(content)
+	panicIf(err)
+	return bytes
+}
+
+func readFileContent(relativePath string) string {
+	dir, file := filepath.Split(relativePath)
 
 	box, err := rice.FindBox(dir)
 	if err != nil {
