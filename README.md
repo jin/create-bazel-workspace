@@ -15,21 +15,22 @@ $ $GOPATH/bin/create-bazel-workspace -dir <output-dir> <layer 1> <layer 2> ... <
 For example, if you want `go` and `scala`, run 
 
 ```
-$ $GOPATH/bin/create-bazel-workspace go scala
+$ create-bazel-workspace go scala
 ```
 
-The default output directory is named `bazel-workspace`. 
+The default output directory is named `bazel-workspace`.
 
 ## Layers
 
 A *layer* contains the following:
 
-- `WORKSPACE`: Specifies external dependencies and configurations
-- `BUILD.bazel`: Specifies the top level BUILD file content
-- `loads.bzl`: Specifies the load statement to be prepended to the BUILD file
-- `post_create.txt`: Further instructions for setting up a layer after `create-bazel-workspace`
-- TODO: Minimal example that makes use of the layer's rulesets (e.g. `android_binary`
-  and `android_library` for the `android` layer)
+-  Minimal example that makes use of the layer's rulesets (e.g. `android_binary`
+  and `android_library` for the `android` layer). This example is available as
+  a top level target `//:<layer>_example` in the generated workspace.
+- `WORKSPACE`: Specifies the WORKSPACE content
+- `BUILD.bazel`: Specifies the top level BUILD file
+- `loads.bzl`: Specifies the load statement to be prepended to the top level BUILD file
+- `post_create.txt`: Further instructions for a layer after `create-bazel-workspace`
 
 When you specify multiple layers, files in each layer will be appended to the
 `base` layer sequentially. 
