@@ -104,9 +104,7 @@ func walkExamplesDirectory(layer string, outputDir string) {
 			fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", ".", err)
 			return err
 		}
-		fmt.Printf("visited file: %q\n", path)
 		if info.IsDir() {
-			fmt.Printf("is directory %q\n", path)
 			if path != "" {
 				os.MkdirAll(filepath.Join(layerExamplesDir,
 					strings.TrimPrefix(path, "examples/")), os.ModePerm)
