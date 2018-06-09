@@ -1,9 +1,1 @@
-From https://github.com/quittle/bazel_android_sdk_downloader:
-
-    $ bazel run @androidsdk//install
-
-This will attempt to download the SDK for the versions specified. If you change
-these values, clean the workspace, or check it out fresh, you will need to
-re-run this command to download and install the SDK again.
-
 Please file issues at https://github.com/bazelbuild/rules_android
