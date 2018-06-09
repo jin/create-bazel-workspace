@@ -18,6 +18,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -56,15 +57,10 @@ func main() {
 	initializeLayer("base", workspaceFile, buildFile, instructionsFile)
 	for _, layer := range layers {
 		initializeLayer(layer, workspaceFile, buildFile, instructionsFile)
+		walkExamplesDirectory(layer, *outputDir)
 	}
 
 	log.Println("Workspace successfully created in " + *outputDir + "/")
-
-	box, err := rice.FindBox("android/examples")
-	if err != nil {
-		panic(err)
-	}
-	log.Println(box)
 }
 
 func initializeLayerLoads(layer string, buildFile *os.File) {
@@ -94,6 +90,42 @@ func writeToFile(file *os.File, content string) int {
 	bytes, err := file.WriteString(content)
 	panicIf(err)
 	return bytes
+}
+
+func walkExamplesDirectory(layer string, outputDir string) {
+	box, err := rice.FindBox(layer)
+	panicIf(err)
+
+	layerExamplesDir := filepath.Join(outputDir, "examples", layer)
+	os.MkdirAll(layerExamplesDir, os.ModePerm)
+
+	err = box.Walk("examples", func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			fmt.Printf("prevent panic by handling failure accessing a path %q: %v\n", ".", err)
+			return err
+		}
+		fmt.Printf("visited file: %q\n", path)
+		if info.IsDir() {
+			fmt.Printf("is directory %q\n", path)
+			if path != "" {
+				os.MkdirAll(filepath.Join(layerExamplesDir,
+					strings.TrimPrefix(path, "examples/")), os.ModePerm)
+			}
+		} else {
+			outputFile, err :=
+				os.Create(filepath.Join(layerExamplesDir,
+					strings.TrimPrefix(path, "examples/")))
+			panicIf(err)
+			defer outputFile.Close()
+			writeToFile(outputFile, readFileContent(filepath.Join(layer, path)))
+		}
+		return nil
+	})
+
+	if err != nil {
+		// TODO: Enforce examples
+		// fmt.Printf("error walking the path %q: %v\n", ".", err)
+	}
 }
 
 func readFileContent(relativePath string) string {
