@@ -79,6 +79,26 @@ Please file issues at https://github.com/bazelbuild/rules_android
 Please file issues at https://github.com/bazelbuild/rules_scala
 ```
 
+## Development
+
+This project can be built with Bazel. Build the binary by running 
+
+```
+$ bazel run //:create-bazel-workspace
+```
+
+To regenerate the BUILD files, run 
+
+```
+$ bazel run //:gazelle
+```. 
+
+To add a new dep, run
+
+```
+$ bazel run //:gazelle -- update-repos example.com/dep/repo
+```
+
 ## Contributing a Layer
 
 To add a layer, open a pull request with new top-level directory named after the layer, containing these files:
