@@ -91,7 +91,7 @@ To regenerate the BUILD files, run
 
 ```
 $ bazel run //:gazelle
-```. 
+``` 
 
 To add a new dep, run
 

@@ -35,7 +35,8 @@ func main() {
 	layers := flag.Args()
 
 	log.Println("Creating Bazel workspace at " + *outputDir + "..")
-	os.Mkdir(*outputDir, os.ModePerm)
+	err := os.Mkdir(*outputDir, os.ModePerm)
+	panicIf(err)
 
 	// TODO: refactor file logic
 	workspaceFile, err := os.OpenFile(*outputDir+"/WORKSPACE", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
