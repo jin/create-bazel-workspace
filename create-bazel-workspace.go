@@ -37,15 +37,16 @@ func main() {
 	log.Println("Creating Bazel workspace at " + *outputDir + "..")
 	os.Mkdir(*outputDir, os.ModePerm)
 
-	workspaceFile, err := os.Create(*outputDir + "/WORKSPACE")
+	// TODO: refactor file logic
+	workspaceFile, err := os.OpenFile(*outputDir+"/WORKSPACE", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	panicIf(err)
 	defer workspaceFile.Close()
 
-	buildFile, err := os.Create(*outputDir + "/BUILD.bazel")
+	buildFile, err := os.OpenFile(*outputDir+"/BUILD.bazel", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	panicIf(err)
 	defer buildFile.Close()
 
-	instructionsFile, err := os.Create(*outputDir + "/instructions.md")
+	instructionsFile, err := os.OpenFile(*outputDir+"/instructions.md", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	panicIf(err)
 	defer buildFile.Close()
 
