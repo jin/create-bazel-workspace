@@ -29,7 +29,6 @@ A *layer* contains the following:
   a top level target `//:<layer>_example` in the generated workspace.
 - `WORKSPACE`: Specifies the WORKSPACE content
 - `BUILD.bazel`: Specifies the top level BUILD file
-- `loads.bzl`: Specifies the load statement to be prepended to the top level BUILD file
 - `post_create.txt`: Further instructions for a layer after `create-bazel-workspace`
 
 When you specify multiple layers, files in each layer will be appended to the
@@ -85,7 +84,6 @@ Please file issues at https://github.com/bazelbuild/rules_scala
 To add a layer, open a pull request with new top-level directory named after the layer, containing these files:
 
 - `<layer>/WORKSPACE.bzl`
-- `<layer>/loads.bzl`
 - `<layer>/BUILD.bazel.bzl`
 - `<layer>/post_create.txt`
 

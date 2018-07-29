@@ -1,24 +1,24 @@
+# gazelle:exclude go/examples
+
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
 gazelle(
     name = "gazelle",
-    prefix = "github.com/example/project",
+    prefix = "github.com/jin/create-bazel-workspace",
 )
 
 go_library(
     name = "go_default_library",
-    srcs = [
-        "bindata.go",
-        "create-bazel-workspace.go",
-    ],
+    srcs = ["create-bazel-workspace.go"],
     data = glob(["go/**/*"]),
-    importpath = "github.com/example/project",
+    importpath = "github.com/jin/create-bazel-workspace",
     visibility = ["//visibility:private"],
+    deps = ["@com_github_geertjohan_go_rice//:go_default_library"],
 )
 
 go_binary(
-    name = "project",
+    name = "create-bazel-workspace",
     embed = [":go_default_library"],
     visibility = ["//visibility:public"],
 )

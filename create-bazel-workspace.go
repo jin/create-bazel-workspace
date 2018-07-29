@@ -49,11 +49,6 @@ func main() {
 	panicIf(err)
 	defer buildFile.Close()
 
-	initializeLayerLoads("base", buildFile)
-	for _, layer := range layers {
-		initializeLayerLoads(layer, buildFile)
-	}
-
 	initializeLayer("base", workspaceFile, buildFile, instructionsFile)
 	for _, layer := range layers {
 		initializeLayer(layer, workspaceFile, buildFile, instructionsFile)
@@ -61,10 +56,6 @@ func main() {
 	}
 
 	log.Println("Workspace successfully created in " + *outputDir + "/")
-}
-
-func initializeLayerLoads(layer string, buildFile *os.File) {
-	writeToFile(buildFile, readFileContent(layer+"/loads.bzl")+"\n")
 }
 
 func initializeLayer(layer string, workspaceFile *os.File, buildFile *os.File, instructionsFile *os.File) {
@@ -96,6 +87,7 @@ func walkExamplesDirectory(layer string, outputDir string) {
 	box, err := rice.FindBox(layer)
 	panicIf(err)
 
+	// e.g. <root>/examples/android
 	layerExamplesDir := filepath.Join(outputDir, "examples", layer)
 	os.MkdirAll(layerExamplesDir, os.ModePerm)
 
